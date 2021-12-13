@@ -4,7 +4,8 @@
 + [Reverse Linked List](#reverse-linked-list)
 + [Palindrome Linked List](#palindrome-linked-list)
 + [Sort List](#sort-list)
-+ 
++ [Merge Two Sorted Lists](#merge-two-sorted-lists)
++ [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
 
 ## Middle of the Linked List
 
@@ -379,3 +380,236 @@ public class Solution {
 }
 
 ```
+## Merge Two Sorted Lists
+
+https://leetcode.com/problems/merge-two-sorted-lists/
+
+<details><summary>Test Cases</summary><blockquote>
+
+``` java
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+    @Test
+    void mergeTwoLists() {
+        ListNode expected = generateLinkedList(List.of(1, 2, 3, 4, 5, 6));
+        var listToTest1 = generateLinkedList(List.of(1, 3, 5));
+        var listToTest2 = generateLinkedList(List.of(2, 4, 6));
+        var actual = new Solution().mergeTwoLists(listToTest1, listToTest2);
+        assertEquals(expected, actual);
+    }
+
+    private ListNode generateLinkedList(List<Integer> lst){
+        var head = new ListNode();
+        var cur = head;
+        for(int val: lst){
+            ListNode next = new ListNode();
+            next.val = val;
+            cur.next = next;
+            cur = cur.next;
+        }
+        return head.next;
+    }
+
+}
+```
+
+``` java
+import java.util.Objects;
+
+public class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+      @Override
+      public String toString() {
+            return "ListNode{" +
+                    "val=" + val +
+                    ", next=" + next +
+                    '}';
+      }
+
+      @Override
+      public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ListNode listNode = (ListNode) o;
+            return val == listNode.val && Objects.equals(next, listNode.next);
+      }
+
+}
+```
+
+</blockquote></details>
+
+```java
+public class Solution {
+    public  ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode ans = new ListNode();
+        ListNode temp = ans ;
+
+        while (list1 != null && list2 != null){
+            if (list1.val < list2.val){
+                temp.next = list1 ;
+                list1 = list1.next ;
+                temp = temp.next ;
+            } else {
+                temp.next = list2 ;
+                list2 = list2.next ;
+                temp = temp.next ;
+            }
+        }
+
+        while (list1 != null){
+            temp.next = list1 ;
+            list1 = list1.next ;
+            temp = temp.next ;
+        }
+
+        while (list2 != null){
+            temp.next = list2 ;
+            list2 = list2.next ;
+            temp = temp.next ;
+        }
+
+
+        return ans.next ;
+    }
+
+}
+
+```
+## Intersection of Two Linked Lists
+
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+<details><summary>Test Cases</summary><blockquote>
+
+``` java
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+    @Test
+    void getSize() {
+        var expected = 5;
+        var listToTest1 = generateLinkedList(List.of(1, 3, 5, 4 ,7));
+        var actual = new Solution().getSize(listToTest1);
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getIntersectionNode() {
+        var headA = generateLinkedList(List.of(1,9,1,2,4));
+        var headB = generateLinkedList(List.of(3,5,7));
+        var actual = new Solution().getIntersectionNode(headA, headB);
+        assertEquals(null, actual);
+    }
+
+    private ListNode generateLinkedList(List<Integer> lst){
+        var head = new ListNode();
+        var cur = head;
+        for(int val: lst){
+            ListNode next = new ListNode();
+            next.val = val;
+            cur.next = next;
+            cur = cur.next;
+        }
+        return head.next;
+    }
+
+}```
+
+``` java
+import java.util.Objects;
+
+public class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+      @Override
+      public String toString() {
+            return "ListNode{" +
+                    "val=" + val +
+                    ", next=" + next +
+                    '}';
+      }
+
+      @Override
+      public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ListNode listNode = (ListNode) o;
+            return val == listNode.val && Objects.equals(next, listNode.next);
+      }
+
+}
+```
+
+</blockquote></details>
+
+```java
+public class Solution {
+    public int getSize(ListNode head)
+    {
+        int count = 0;
+        while(head!=null)
+        {
+            count++;
+            head = head.next;
+        }
+        return count;
+    }
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null){
+            return null;
+        }
+
+        int sizeA = getSize(headA);
+        int sizeB = getSize(headB);
+
+
+        if(sizeA<sizeB)
+        {
+            for(int i=0;i<sizeB-sizeA;i++)
+            {
+                headB = headB.next;
+
+            }
+        }
+        else
+        {
+            for(int i=0;i<sizeA-sizeB;i++)
+            {
+                headA = headA.next;
+            }
+        }
+
+
+        while(headA!=null && headB!=null && headA!=headB)
+        {
+            headA = headA.next;
+            headB = headB.next;
+        }
+
+        if(headA==null || headB==null)
+            return null;
+
+
+        return headA;
+    }
+}
+```
+
