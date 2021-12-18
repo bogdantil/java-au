@@ -1,6 +1,7 @@
 # Design
 + [Min Stack](#min-stack)
-+ [ Implement Stack using Queues](#implement-stack-using-queues)
++ [Implement Stack using Queues](#implement-stack-using-queues)
++ [Implement Queue using Stacks](#implement-queue using-stacks)
 
 ## Min Stack
 
@@ -194,3 +195,101 @@ class MyStack {
     }
 }
 ```
+## Implement Queue using Stacks
+
+https://leetcode.com/problems/implement-queue-using-stacks/
+
+<details><summary>Test Cases</summary><blockquote>
+
+``` java
+package com.company;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+
+    @Test
+    void pop() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        var n = 1;
+        assertEquals(testminstack.pop(), n);
+    }
+
+    @Test
+    void push() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        var expected = minStackList(List.of(1, 4, 7, 8));
+        testminstack.push(8);
+        assertEquals(testminstack, expected);
+    }
+    @Test
+    void empty() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        boolean n = false;
+        assertEquals(testminstack.empty(), n);
+    }
+
+    private MyQueue minStackList(List<Integer> lst){
+        var stack = new MyQueue();
+        for (var val: lst) {
+            stack.push(val);
+        }
+        return stack;
+    }
+
+}
+```
+
+</blockquote></details>
+
+```java
+class MyQueue {
+
+    private Stack<Integer> s = new Stack();
+    private Stack<Integer> t = new Stack();
+
+    public MyQueue()
+    {
+
+    }
+
+    public void push(int x)
+    {
+        while(!s.isEmpty())t.push(s.pop());
+        s.push(x);
+        while(!t.isEmpty())s.push(t.pop());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyQueue)) return false;
+        MyQueue myQueue = (MyQueue) o;
+        return Objects.equals(s, myQueue.s) && Objects.equals(t, myQueue.t);
+    }
+
+
+    public int pop()
+    {
+        return s.pop();
+    }
+
+    public int peek()
+    {
+        return s.peek();
+    }
+
+    public boolean empty()
+    {
+        return s.isEmpty();
+    }
+}
+
+```
+
