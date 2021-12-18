@@ -1,5 +1,6 @@
 # Design
 + [Min Stack](#min-stack)
++ [ Implement Stack using Queues](#implement-stack-using-queues)
 
 ## Min Stack
 
@@ -90,6 +91,106 @@ class MinStack {
 
     public int getMin() {
         return minimumElement.get(minimumElement.size()-1);
+    }
+}
+```
+## Implement Stack using Queues
+
+https://leetcode.com/problems/implement-stack-using-queues/
+
+<details><summary>Test Cases</summary><blockquote>
+
+``` java
+package com.company;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+    @Test
+    void top() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        var n = 7;
+        assertEquals(testminstack.top(), n);
+    }
+    @Test
+    void pop() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        var n = 7;
+        assertEquals(testminstack.pop(), n);
+    }
+
+    @Test
+    void push() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        var expected = minStackList(List.of(1, 4, 7, 8));
+        testminstack.push(8);
+        assertEquals(testminstack, expected);
+    }
+    @Test
+    void empty() {
+        var testminstack = minStackList(List.of(1, 4, 7));
+        boolean n = false;
+        assertEquals(testminstack.empty(), n);
+    }
+
+    private MyStack minStackList(List<Integer> lst){
+        var stack = new MyStack();
+        for (var val: lst) {
+            stack.push(val);
+        }
+        return stack;
+    }
+
+}
+```
+
+</blockquote></details>
+
+```java
+class MyStack {
+    Queue q1 = null;
+    Queue q2 = null;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyStack)) return false;
+        MyStack myStack = (MyStack) o;
+        return Objects.equals(q1, myStack.q1) && Objects.equals(q2, myStack.q2);
+    }
+
+
+    public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+
+    public void push(int x) {
+        q2.add(x);
+        while (!q1.isEmpty()) {
+            q2.add(q1.poll());
+        }
+        while (!q2.isEmpty()) {
+            q1.add(q2.poll());
+        }
+    }
+
+    public int pop() {
+        return (Integer)q1.poll();
+    }
+
+    public int top() {
+        return (Integer)q1.peek();
+    }
+
+    public boolean empty() {
+        return q1.isEmpty();
     }
 }
 ```
