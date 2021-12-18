@@ -1,7 +1,7 @@
 # Design
 + [Min Stack](#min-stack)
 + [Implement Stack using Queues](#implement-stack-using-queues)
-+ [Implement Queue using Stacks](#implement-queue using-stacks)
++ [Implement Queue using Stacks](#implement-queue-using-stacks)
 
 ## Min Stack
 
